@@ -1,6 +1,6 @@
 import Player from "./Player";
 import MapGenerator from './MapGenerator';
-import Phaser from 'Phaser';
+import * as Phaser from 'phaser';
 
 const TITLE_SIZE = 32;
 const WIDTH = 1000;
@@ -62,7 +62,7 @@ export default class Game {
     run() {
         this._generator.generate();
 
-        this._game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', {
+        this._game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', {
             preload: this._preload.bind(this),
             create: this._create.bind(this),
             update: this._update.bind(this),
@@ -70,15 +70,10 @@ export default class Game {
         });
     }
 
-
     _preload() {
         this._game.stage.backgroundColor = '#007236';
 
-        // this._game.load.image('mushroom', 'assets/sprites/mushroom2.png');
-        // this._game.load.image('phaser', 'assets/sprites/sonic_havok_sanity.png');
-
         const DATA = this._generator.getMap();
-
         MAP_DATA.layers[0].data = DATA;
         this._game.load.tilemap('mario', null, MAP_DATA, Phaser.Tilemap.TILED_JSON);
         this._game.load.image('tiles', 'dist/assets/sprites/Dungeon_A2.png');

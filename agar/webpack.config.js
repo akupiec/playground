@@ -15,14 +15,14 @@ module.exports = {
                 loader: 'babel',
                 query: {
                     cacheDirectory: true,
-                    plugins: ['transform-es2015-modules-amd']
+                    plugins: ['transform-es2015-modules-commonjs']
                 }
             }
         ]
     },
     externals: {
         'jquery': 'jQuery',
-        'Phaser': 'Phaser',
+        // 'Phaser': 'Phaser',
         'underscore': '_'
     }
 };
