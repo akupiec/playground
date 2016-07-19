@@ -6757,7 +6757,7 @@
                     lodash.prototype.valueOf = wrapperValueOf;
 
                     // add `Array` functions that return unwrapped values
-                    forEach(['join', 'pop', 'shift'], function (methodName) {
+                    forEach(['join', 'pop', 'move'], function (methodName) {
                         var func = arrayRef[methodName];
                         lodash.prototype[methodName] = function () {
                             var chainAll = this.__chain__,

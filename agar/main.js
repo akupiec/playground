@@ -1,8 +1,3 @@
-// import Game from './app/Game';
-// const game = new Game();
-// game.run();
-
-import MapGenerator from './app/MapGenerator';
-var a = new MapGenerator();
-a.generate();
-a.render();
+import Game from './app/MapPainter';
+const game = new Game();
+game.run();
