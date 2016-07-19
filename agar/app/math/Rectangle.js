@@ -36,7 +36,7 @@ export class Rectangle {
     }
 
     //TODO: unknown licence - analyze and rewrite
-    overlaps(B, padding) {
+    overlaps(B, padding = 0) {
         const A = this;
         return !(B.getLeft() - padding >= A.getRight() ||
         B.getRight() <= A.getLeft() - padding ||

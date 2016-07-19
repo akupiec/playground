@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import * as marsagliaPolar from '../lib/marsaglia-polar';
 import {Rectangle} from "./math/Rectangle";
 import {Line} from "./math/Line";
@@ -17,6 +18,7 @@ const min_room_size = 10; // (0, }
 const separation_force = 2; // (0, }
 const main_room_size = 1.2;
 const extraEdgesCorridors = 0.1;
+const corridor_width = 10;
 
 const ROOM_TYPES = Object.freeze({
     MAIN: 0,
@@ -58,6 +60,10 @@ class Room {
     isCorridorRoom() {
         return this.isType(ROOM_TYPES.CORRIDOR_ROOM)
     }
+
+    isCorridor() {
+        return this.isType(ROOM_TYPES.CORRIDOR);
+    }
 }
 
 export default class MapGenerator {
@@ -69,8 +75,11 @@ export default class MapGenerator {
         var mainRooms = this._getMainRooms();
         this._edges = this._genSpanTreeEdges(mainRooms);
         this._corridorOutlines = this._genCorridorOutlines(this._edges);
-        // this._getCorridorRoomInfo(this._corridorOutlines);
-        // this.cleanUpAfterGeneration();
+
+        let _corridorRectangles = _.flatten(this._genCorridorsRectangles(this._corridorOutlines));
+        this._corridors = this._genCorridors(_corridorRectangles);
+        this._detectUnUsed(this._corridors);
+
         console.timeEnd('generation');
     }
 
@@ -78,12 +87,7 @@ export default class MapGenerator {
         return this._allRooms;
     }
 
-    cleanUp() {
-        this._allRooms = null;
-        this._edges = null;
-        this._corridorOutlines = null;
-        this._corridorRooms = null;
-    }
+
 
     _getMainRooms() {
         return _.filter(this._allRooms, (room) => {
@@ -250,20 +254,34 @@ export default class MapGenerator {
         });
     }
 
-    _genCorridors(corridorOutlines) {
-        corridorOutlines.map()
+    _genCorridorsRectangles(corridorOutlines) {
+        return corridorOutlines.map((lines) => {
+            return lines.map((line) => {
+                const rect = line.toRectangle(corridor_width);
+                if (lines.length > 1 && line.isVertical()) {
+                    rect.width += corridor_width;
+                }
+                return rect;
+            })
+        })
     }
 
-    // _getCorridorRoomInfo(corridorOutlines) {
-    //     const rooms = this._getMinorRooms();
-    //     rooms.map((room) => {
-    //         corridorOutlines.map((outline) => {
-    //             outline.map((line) => {
-    //                 if (room.getBounds().crossLine(line)) {
-    //                     room.addType(ROOM_TYPES.CORRIDOR_ROOM)
-    //                 }
-    //             });
-    //         })
-    //     });
-    // }
+    _genCorridors(corridorRects) {
+        return corridorRects.map((rect) => {
+            const r = new Room(rect);
+            r.addType(ROOM_TYPES.CORRIDOR);
+            return r;
+        });
+    }
+
+    _detectUnUsed(corridors) {
+        this._allRooms.map((room) => {
+            corridors.map((corridor) => {
+                if (!room.isMain() && room.getBounds().overlaps(corridor.getBounds())) {
+                    room.addType(ROOM_TYPES.CORRIDOR_ROOM)
+                }
+            })
+        })
+    }
+
 }
