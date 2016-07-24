@@ -23,6 +23,5 @@ module.exports = {
     externals: {
         'jquery': 'jQuery',
         'phaser': 'Phaser',
-        'underscore': '_'
     }
 };

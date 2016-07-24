@@ -1,6 +1,8 @@
-import {Rectangle} from "./Rectangle";
+var Rectangle = require('./Rectangle');
+var Point = require('./Point');
+var common = require('./common');
 
-export class Line {
+module.exports = class Line {
     constructor(p0, p1) {
         this.p0 = p0;
         this.p1 = p1;
@@ -27,8 +29,8 @@ export class Line {
                 return new Rectangle(...this.p1.getRaw(), Math.abs(this.p1.x - this.p0.x), width);
     }
 
-
     getRaw() {
         return [this.p0, this.p1];
     }
-}
+};
+

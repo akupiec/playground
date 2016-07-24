@@ -1,7 +1,6 @@
 import MapGenerator from "./MapGenerator";
 
-
-export default class Game {
+module.exports = class Game {
     constructor() {
         this._generator = new MapGenerator();
         this.stage = new PIXI.Container();
@@ -14,10 +13,11 @@ export default class Game {
 
         this._generator.generate();
 
+        this.drawWorldBound();
         this.drawRooms();
         // this.drawGraphConnections();
         // this.drawRoomConnection();
-        this.drawCorridorsRectangles();
+        // this.drawCorridorsRectangles();
         this.render();
     }
 
@@ -45,6 +45,12 @@ export default class Game {
         });
     }
 
+    drawWorldBound() {
+        this.graphics.beginFill(0x0000FF);
+        this.graphics.drawCircle(this._generator._worldBound.x, this._generator._worldBound.y, this._generator._worldBound.r);
+        this.graphics.endFill();
+    }
+
     drawRooms() {
         this._generator.getRooms().map((room) => {
             const rect = room.getBounds();
@@ -56,6 +62,8 @@ export default class Game {
             this.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
             this.graphics.endFill();
         });
+
+
     }
 
     drawCorridorsRectangles() {

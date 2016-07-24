@@ -2,7 +2,6 @@
 // See http://en.wikipedia.org/wiki/Kruskal's_algorithm
 // and http://programmingpraxis.com/2010/04/06/minimum-spanning-tree-kruskals-algorithm/
 
-
 var _ = require('underscore');
 
 var nodes = ["A", "B", "C", "D", "E", "F", "G"];
@@ -15,7 +14,7 @@ var edges = [
     ["F", "G", 11]
 ];
 
-export function kruskal(nodes, edges) {
+module.exports = function kruskal(nodes, edges) {
     var mst = [];
     var forest = _.map(nodes, function (node) {
         return [node];
@@ -43,4 +42,5 @@ export function kruskal(nodes, edges) {
         }
     }
     return mst;
-}
+};
+

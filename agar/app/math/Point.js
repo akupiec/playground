@@ -1,4 +1,4 @@
-export class Point {
+module.exports = class Point {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -7,4 +7,4 @@ export class Point {
     getRaw() {
         return [this.x, this.y];
     }
-}
+};

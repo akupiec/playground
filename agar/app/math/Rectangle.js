@@ -1,4 +1,4 @@
-export class Rectangle {
+class Rectangle {
     constructor(x, y, width, height) {
         console.assert(width > 0);
         console.assert(height > 0);
@@ -9,7 +9,7 @@ export class Rectangle {
         this.height = height;
 
         this._right = x + width;
-        this._top = y + height;
+        this._bottom = y + height;
     }
 
     getLeft() {
@@ -21,11 +21,11 @@ export class Rectangle {
     }
 
     getTop() {
-        return Math.floor(this._top);
+        return Math.floor(this.y);
     }
 
     getBottom() {
-        return Math.floor(this.y);
+        return Math.floor(this._bottom);
     }
 
     getCenter() {
@@ -35,33 +35,40 @@ export class Rectangle {
         }
     }
 
-    //TODO: unknown licence - analyze and rewrite
-    overlaps(B, padding = 0) {
+    overlaps(B, minSeparation = 0) {
         const A = this;
-        return !(B.getLeft() - padding >= A.getRight() ||
-        B.getRight() <= A.getLeft() - padding ||
-        B.getTop() <= A.getBottom() - padding ||
-        B.getBottom() - padding >= A.getTop());
+        return !(B.getLeft() - minSeparation >= A.getRight() ||
+        B.getRight() <= A.getLeft() - minSeparation ||
+        B.getBottom() <= A.getTop() - minSeparation ||
+        B.getTop() - minSeparation >= A.getBottom());
     }
 
     //TODO: unknown licence - analyze and rewrite
+    minSeparationVector(B, minSeparation) {
+        var vect = this.separationVector(B, minSeparation);
+        if (Math.abs(vect.x) < Math.abs(vect.y)) {
+            vect.y = 0;
+        }
+        else {
+            vect.x = 0;
+        }
+        return vect;
+    }
+
     separationVector(B, padding) {
         let A = this;
         let dx = Math.min(A.getRight() - B.getLeft() + padding, A.getLeft() - B.getRight() - padding);
-        let dy = Math.min(A.getBottom() - B.getTop() - padding, A.getTop() - B.getBottom() - padding);
-        if (Math.abs(dx) < Math.abs(dy)) {
-            return {x: dx, y: 0};
-        }
-        else {
-            return {x: 0, y: dy};
-        }
+        let dy = Math.min(A.getTop() - B.getBottom() - padding, A.getBottom() - B.getTop() - padding);
+        return {x: dx, y: dy};
     }
 
     move(x, y) {
         this._right += x;
         this.x += x;
 
-        this._top += y;
+        this._bottom += y;
         this.y += y;
     }
 }
+
+module.exports = Rectangle;

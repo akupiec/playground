@@ -11,9 +11,14 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.10.3",
     "delaunay-fast": "^1.0.1",
     "delaunay-triangulate": "^1.1.6",
+    "pixi": "^0.3.1",
+    "seedrandom": "^2.4.2",
+    "underscore": "^1.8.3",
     "webpack": "^1.13.1"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3",
     "webpack-dev-server": "^1.14.1"
   }
 }
