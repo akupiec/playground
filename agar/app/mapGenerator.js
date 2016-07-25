@@ -20,9 +20,8 @@ const max_room_size = 40; // (0, }
 const min_room_size = 10; // (0, }
 const separation_force = 8; // (0, }
 const main_room_size = 1.2;
-const extraEdgesCorridors = 0.1;
-const corridor_width = 10;
 const gen_world_bound = 450;
+const secret_chance = 0.3;
 
 
 module.exports = class MapGenerator {
@@ -33,6 +32,7 @@ module.exports = class MapGenerator {
         this._allRooms = this._genRooms(rectangles);
         this._repositionRooms();
         this._orderRooms();
+        this._getExtraRoomsInfo();
 
         console.timeEnd('generation');
     }
@@ -46,14 +46,23 @@ module.exports = class MapGenerator {
     }
 
     _orderRooms() {
-        var points = this._getMainRooms().map((room)=> {
-            return room.getCenter();
-        });
+        const rooms = this._getMainRooms();
+        console.assert(rooms.length > 0);
+
+        var points = rooms.map((room) => room.getCenter());
         TSP.GAInitialize(points);
-        var best;
-        for (let i = 0; i < 20; i++) {
+        var best = [];
+        for (let iteration = 0; iteration < 10; iteration++) {
             best = TSP.GANextGeneration();
         }
+
+        for (var i = 0; i < best.length; i++) {
+            var bestVal = best[i];
+            const room = rooms[bestVal];
+            room.setOrder(i);
+        }
+
+        rooms[best[0]].addType(ROOM_TYPES.START);
     }
 
     _getMainRooms() {
@@ -130,5 +139,35 @@ module.exports = class MapGenerator {
             }
             return room;
         });
+    }
+
+    _getExtraRoomsInfo() {
+        const rooms = this._getMainRooms();
+        var endIdx = Math.floor(MyMath.normalizeRandomRange(Math.random(), rooms.length - 6, rooms.length));
+
+        for (var i = 0; i < rooms.length; i++) {
+            var room = rooms[i];
+            if (room.getOrder() === endIdx) {
+                room.addType(ROOM_TYPES.END);
+            }
+            if (room.getOrder() > endIdx && Math.random() <= secret_chance) {
+                room.addType(ROOM_TYPES.SECRET);
+            }
+
+        }
+    }
+
+    _genDoors() {
+        const rooms = this._getMainRooms();
+        rooms.map((room) => {
+            // var numOfDoors = Math.round(MyMath.normalizeRandomRange(Math.random, 1, 4));
+            var rect = room.getBounds();
+
+            room.addDoor(new Point(rect.x + rect.width / 2, rect.y));
+            room.addDoor(new Point(rect.x + rect.width / 2, rect.getBottom()));
+            room.addDoor(new Point(rect.x, rect.y + rect.height / 2));
+            room.addDoor(new Point(rect.getRight(), rect.y + rect.height / 2));
+        })
+
     }
 };

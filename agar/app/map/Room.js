@@ -2,6 +2,8 @@ class Room {
     constructor(rect) {
         this.rect = rect;
         this._types = [];
+        this._order = -1;
+        this._doors = [];
     }
 
     getBounds() {
@@ -22,26 +24,48 @@ class Room {
     }
 
     isType(type) {
-        return this._types.indexOf(type) !== -1;
+        const val = this._types.indexOf(type);
+        return val !== -1 && val !== undefined;
     }
 
     isMain() {
         return this.isType(ROOM_TYPES.MAIN);
     }
 
-    isCorridorRoom() {
-        return this.isType(ROOM_TYPES.CORRIDOR_ROOM)
+    isStart() {
+        return this.isType(ROOM_TYPES.START);
     }
 
-    isCorridor() {
-        return this.isType(ROOM_TYPES.CORRIDOR);
+    isEnd() {
+        return this.isType(ROOM_TYPES.END);
+    }
+
+    isSecret() {
+        return this.isType(ROOM_TYPES.SECRET);
+    }
+
+    setOrder(order) {
+        this._order = order;
+    }
+
+    getOrder() {
+        return this._order;
+    }
+
+    addDoor(door) {
+        this._doors.push(door);
+    }
+
+    getDoors() {
+        return this._doors;
     }
 }
 
 const ROOM_TYPES = Object.freeze({
     MAIN: 0,
-    CORRIDOR: 1,
-    CORRIDOR_ROOM: 2,
+    START: 1,
+    END: 2,
+    SECRET: 3,
 });
 
 module.exports = {

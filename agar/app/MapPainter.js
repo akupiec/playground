@@ -15,34 +15,8 @@ module.exports = class Game {
 
         this.drawWorldBound();
         this.drawRooms();
-        // this.drawGraphConnections();
-        // this.drawRoomConnection();
-        // this.drawCorridorsRectangles();
         this.render();
-    }
-
-    drawRoomConnection() {
-        this.graphics.lineStyle(4, 0xffffff, 1);
-        this._generator._corridorOutlines.map((corridor) => {
-            if (corridor) {
-                corridor.map((line) => {
-                    this.graphics.moveTo(...line.p0.getRaw());
-                    this.graphics.lineTo(...line.p1.getRaw());
-                })
-            }
-        });
-    }
-
-    drawGraphConnections() {
-        this.graphics.lineStyle(4, 0xffd900, 1);
-        this._generator._edges.map((edge) => {
-            const a = edge[0].getCenter();
-            const b = edge[1].getCenter();
-            this.graphics.drawCircle(a.x, a.y, 3);
-            this.graphics.drawCircle(b.x, b.y, 3);
-            this.graphics.moveTo(a.x, a.y);
-            this.graphics.lineTo(b.x, b.y);
-        });
+        this.drawNums();
     }
 
     drawWorldBound() {
@@ -56,23 +30,21 @@ module.exports = class Game {
             const rect = room.getBounds();
             let color = 0x000000;
             color = room.isMain() ? 0xFF0000 : color;
-            color = room.isCorridorRoom() ? 0xaa00aa : color;
-            color = room.isCorridor() ? 0xaaaaaa : color;
+            color = room.isStart() || room.isEnd() ? 0xaaaaaa : color;
+            color = room.isSecret() ? 0x00FFaa : color;
             this.graphics.beginFill(color);
             this.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
             this.graphics.endFill();
         });
-
-
     }
 
-    drawCorridorsRectangles() {
-        this._generator._corridors.map((room) => {
-            const rect = room.getBounds();
-            let color = 0xFF00FF;
-            this.graphics.beginFill(color);
-            this.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
-            this.graphics.endFill();
+    drawNums() {
+        this._generator._getMainRooms().map((room) => {
+            var countingText = new PIXI.Text(room.getOrder(), {font: '15px Arvo', fill: '#ffffff', strokeThickness: 7});
+            const center = room.getCenter();
+            countingText.position.x = center.x;
+            countingText.position.y = center.y;
+            this.stage.addChild(countingText);
         });
     }
 
@@ -83,4 +55,4 @@ module.exports = class Game {
             this.renderer.render(this.stage);
         }
     }
-}
+};
