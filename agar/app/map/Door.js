@@ -1,5 +1,5 @@
-var Line = require('../math/Line');
-var Point = require('../math/Point');
+import {Line} from "../math/Line";
+import {Point} from "../math/Point";
 
 const DOOR_TYPES = {
     HORIZONTAL: 0,
@@ -21,7 +21,7 @@ class Door {
     }
 }
 
-module.exports = {
+export {
     DOOR_TYPES,
     Door
 };

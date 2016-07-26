@@ -1,16 +1,12 @@
 require('seedrandom');
-var _ = require('underscore');
-var marsagliaPolar = require('../lib/marsaglia-polar');
-var Rectangle = require("./math/Rectangle");
-var TSP = require('../lib/tsp/algorithm');
-var Circle = require('./math/Circle');
-var Room = require('./map/Room').Room;
-var ROOM_TYPES = require('./map/Room').ROOM_TYPES;
-var Door = require('./map/Door').Door;
-var DOOR_TYPES = require('./map/Door').DOOR_TYPES;
-var Map = require('./map/Map');
-
-var MyMath = require('./math/common');
+import _ from 'underscore';
+import Circle from "./math/Circle";
+import {Room, ROOM_TYPES} from "./map/Room";
+import {Door, DOOR_TYPES} from "./map/Door";
+import * as TSP from "../lib/tsp/algorithm";
+import {Rectangle} from "./math/Rectangle";
+import * as MyMath from "./math/common";
+import * as marsagliaPolar from "../lib/marsaglia-polar";
 
 
 // Math.seedrandom('hedddd6');
@@ -26,7 +22,7 @@ const gen_world_bound = 450;
 const secret_chance = 0.3;
 const door_size = 5;
 
-module.exports = class MapGenerator {
+export class MapGenerator {
     generate() {
         console.time('generation');
         this._worldBound = this._genWorldBounds();

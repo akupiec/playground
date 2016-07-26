@@ -1,7 +1,8 @@
-var Point = require('./Point');
-var MyMath = require('./common');
+import {Point} from './Point';
+import * as MyMath from "./common";
 
-class Circle {
+
+export default class Circle {
     constructor(x, y, r) {
         this.x = x;
         this.y = y;
@@ -26,5 +27,3 @@ class Circle {
         return [this.x, this.y, this.r];
     }
 }
-
-module.exports = Circle;

@@ -1,6 +1,6 @@
-import MapGenerator from "./MapGenerator";
+import {MapGenerator} from "./MapGenerator";
 
-module.exports = class Game {
+export class Game {
     constructor() {
         this._generator = new MapGenerator();
         this.stage = new PIXI.Container();

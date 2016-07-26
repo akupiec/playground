@@ -68,7 +68,7 @@ const ROOM_TYPES = Object.freeze({
     SECRET: 3,
 });
 
-module.exports = {
+export {
     Room,
     ROOM_TYPES,
 };

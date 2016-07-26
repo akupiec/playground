@@ -1,4 +1,4 @@
-class Rectangle {
+export class Rectangle {
     constructor(x, y, width, height) {
         console.assert(width > 0);
         console.assert(height > 0);
@@ -81,5 +81,3 @@ class Rectangle {
         this.y += y;
     }
 }
-
-module.exports = Rectangle;

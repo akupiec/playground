@@ -1,7 +1,6 @@
 var assert = require('chai').assert;
-var Rectangle = require('../app/math/Rectangle');
-var Line = require('../app/math/Line');
-var Point = require('../app/math/Point');
+import {Rectangle} from "../app/math/Rectangle";
+
 
 describe('Rectangle', function () {
     it('should getTop', function () {
