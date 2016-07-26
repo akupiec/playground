@@ -15,6 +15,7 @@ module.exports = class Game {
 
         this.drawWorldBound();
         this.drawRooms();
+        this.drawDoors();
         this.render();
         this.drawNums();
     }
@@ -46,6 +47,17 @@ module.exports = class Game {
             countingText.position.y = center.y;
             this.stage.addChild(countingText);
         });
+    }
+
+    drawDoors() {
+        this._generator.getRooms().map((room) => {
+            room.getDoors().map((door) => {
+                var line = door.getLine();
+                this.graphics.lineStyle(4, 0x00ffd9, 1);
+                this.graphics.moveTo(line.p0.x, line.p0.y);
+                this.graphics.lineTo(line.p1.x, line.p1.y);
+            })
+        })
     }
 
     render() {

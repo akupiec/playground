@@ -7,9 +7,12 @@ class Rectangle {
         this.y = y;
         this.width = width;
         this.height = height;
+        this._calculateRightAndBottom();
+    }
 
-        this._right = x + width;
-        this._bottom = y + height;
+    _calculateRightAndBottom() {
+        this._right = this.x + this.width;
+        this._bottom = this.y + this.height;
     }
 
     getLeft() {
@@ -33,6 +36,14 @@ class Rectangle {
             x: this.x + this.width / 2,
             y: this.y + this.height / 2
         }
+    }
+
+    snapToGrid() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        this.width = Math.round(this.width);
+        this.height = Math.round(this.height);
+        this._calculateRightAndBottom();
     }
 
     overlaps(B, minSeparation = 0) {

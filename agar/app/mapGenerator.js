@@ -6,6 +6,8 @@ var TSP = require('../lib/tsp/algorithm');
 var Circle = require('./math/Circle');
 var Room = require('./map/Room').Room;
 var ROOM_TYPES = require('./map/Room').ROOM_TYPES;
+var Door = require('./map/Door').Door;
+var DOOR_TYPES = require('./map/Door').DOOR_TYPES;
 var Map = require('./map/Map');
 
 var MyMath = require('./math/common');
@@ -22,7 +24,7 @@ const separation_force = 8; // (0, }
 const main_room_size = 1.2;
 const gen_world_bound = 450;
 const secret_chance = 0.3;
-
+const door_size = 5;
 
 module.exports = class MapGenerator {
     generate() {
@@ -31,8 +33,10 @@ module.exports = class MapGenerator {
         var rectangles = this._genRects();
         this._allRooms = this._genRooms(rectangles);
         this._repositionRooms();
+        this._snapRoomsToGrid();
         this._orderRooms();
         this._getExtraRoomsInfo();
+        this._genDoors();
 
         console.timeEnd('generation');
     }
@@ -141,6 +145,12 @@ module.exports = class MapGenerator {
         });
     }
 
+    _snapRoomsToGrid() {
+        this._allRooms.map((room) => {
+            room.getBounds().snapToGrid();
+        })
+    }
+
     _getExtraRoomsInfo() {
         const rooms = this._getMainRooms();
         var endIdx = Math.floor(MyMath.normalizeRandomRange(Math.random(), rooms.length - 6, rooms.length));
@@ -163,11 +173,10 @@ module.exports = class MapGenerator {
             // var numOfDoors = Math.round(MyMath.normalizeRandomRange(Math.random, 1, 4));
             var rect = room.getBounds();
 
-            room.addDoor(new Point(rect.x + rect.width / 2, rect.y));
-            room.addDoor(new Point(rect.x + rect.width / 2, rect.getBottom()));
-            room.addDoor(new Point(rect.x, rect.y + rect.height / 2));
-            room.addDoor(new Point(rect.getRight(), rect.y + rect.height / 2));
+            room.addDoor(new Door(rect.x + rect.width / 2, rect.y, door_size, DOOR_TYPES.HORIZONTAL));
+            room.addDoor(new Door(rect.x + rect.width / 2, rect.getBottom(), door_size, DOOR_TYPES.HORIZONTAL));
+            room.addDoor(new Door(rect.x, rect.y + rect.height / 2, door_size, DOOR_TYPES.VERTICAL));
+            room.addDoor(new Door(rect.getRight(), rect.y + rect.height / 2, door_size, DOOR_TYPES.VERTICAL));
         })
-
     }
 };
