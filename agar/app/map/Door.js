@@ -6,6 +6,10 @@ const DOOR_TYPES = {
     VERTICAL: 1,
 };
 
+const SPRITE_DATA = [{
+    floor: 11,
+}];
+
 class Door {
     constructor(x, y, w, type) {
         let p0 = new Point(x, y);
@@ -19,6 +23,19 @@ class Door {
     getLine() {
         return this._line;
     }
+
+    paintOnMap(mapData) {
+        if (this._line.isHorizontal()) {
+            for (let i = this._line.p0.x; i < this._line.p1.x; i++) {
+                mapData.setVal(i, this._line.p0.y, SPRITE_DATA[0].floor)
+            }
+        } else if (this._line.isVertical()) {
+            for (let i = this._line.p0.y; i < this._line.p1.y; i++) {
+                mapData.setVal(this._line.p0.x, i, SPRITE_DATA[0].floor)
+            }
+        }
+    }
+
 }
 
 export {

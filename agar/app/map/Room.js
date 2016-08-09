@@ -1,19 +1,26 @@
+const WALL_THICKNESS = 1;
+const SPRITE_DATA = [{
+    floor: 4,
+    wall: 5,
+}];
+
 class Room {
     constructor(rect) {
-        this.rect = rect;
+        this._rect = rect;
         this._types = [];
         this._order = -1;
         this._doors = [];
+        this._spriteSet = 0;
     }
 
     getBounds() {
-        return this.rect;
+        return this._rect;
     }
 
     getCenter() {
         return {
-            x: this.rect.x + this.rect.width / 2,
-            y: this.rect.y + this.rect.height / 2
+            x: this._rect.x + this._rect.width / 2,
+            y: this._rect.y + this._rect.height / 2
         }
     }
 
@@ -58,6 +65,27 @@ class Room {
 
     getDoors() {
         return this._doors;
+    }
+
+    paintOnMap(mapData) {
+        function paintWalls() {
+            const wallValue = SPRITE_DATA[this._spriteSet].wall;
+            const floorValue = SPRITE_DATA[this._spriteSet].floor;
+            for (var j = this._rect.y; j < this._rect.getBottom(); j++) {
+                for (var i = this._rect.x; i < this._rect.getRight(); i++) {
+                    if (j === this._rect.y || j === this._rect.getBottom() - 1 || i === this._rect.x || i === this._rect.getRight() - 1) {
+                        mapData.setVal(i, j, wallValue);
+                    } else {
+                        mapData.setVal(i, j, floorValue)
+                    }
+                }
+            }
+        }
+
+        paintWalls.call(this);
+        this._doors.map((door) => {
+            door.paintOnMap(mapData);
+        });
     }
 }
 

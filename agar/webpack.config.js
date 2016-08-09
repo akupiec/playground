@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = {
     name: 'client code',
     entry: './main.js',
@@ -21,7 +23,7 @@ module.exports = {
         ]
     },
     externals: {
-        'jquery': 'jQuery',
+        // 'jquery': 'jQuery',
         'phaser': 'Phaser',
     }
 };

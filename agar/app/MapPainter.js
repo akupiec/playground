@@ -1,4 +1,5 @@
 import {MapGenerator} from "./MapGenerator";
+import PIXI from 'pixi.js';
 
 export class Game {
     constructor() {
@@ -67,4 +68,4 @@ export class Game {
             this.renderer.render(this.stage);
         }
     }
-};
+}

@@ -8,11 +8,11 @@ export class Line {
     }
 
     isVertical() {
-        return this.p0.y === this.p1.y;
+        return this.p0.x === this.p1.x;
     }
 
     isHorizontal() {
-        return this.p0.x === this.p1.x;
+        return this.p0.y === this.p1.y;
     }
 
     toRectangle(width) {

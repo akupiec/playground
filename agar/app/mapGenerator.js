@@ -1,5 +1,7 @@
 require('seedrandom');
 import _ from 'underscore';
+import {CircleShape} from "./map/CircleShape";
+import {MapData} from "./map/MapData";
 import Circle from "./math/Circle";
 import {Room, ROOM_TYPES} from "./map/Room";
 import {Door, DOOR_TYPES} from "./map/Door";
@@ -41,8 +43,17 @@ export class MapGenerator {
         return this._allRooms;
     }
 
+    getMapData() {
+        const rawData = new MapData(gen_range_w, gen_range_h);
+        this._allRooms.map((room) => {
+            room.paintOnMap(rawData);
+        });
+        this._worldBound.paintOnMap(rawData);
+        return rawData;
+    }
+
     _genWorldBounds() {
-        return new Circle(gen_range_w / 2, gen_range_h / 2, gen_world_bound);
+        return new CircleShape(gen_range_w / 2, gen_range_h / 2, gen_world_bound);
     }
 
     _orderRooms() {
@@ -175,4 +186,4 @@ export class MapGenerator {
             room.addDoor(new Door(rect.getRight(), rect.y + rect.height / 2, door_size, DOOR_TYPES.VERTICAL));
         })
     }
-};
+}
