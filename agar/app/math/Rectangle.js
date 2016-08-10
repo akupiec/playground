@@ -16,19 +16,19 @@ export class Rectangle {
     }
 
     getLeft() {
-        return Math.floor(this.x);
+        return this.x;
     }
 
     getRight() {
-        return Math.floor(this._right);
+        return this._right;
     }
 
     getTop() {
-        return Math.floor(this.y);
+        return this.y;
     }
 
     getBottom() {
-        return Math.floor(this._bottom);
+        return this._bottom;
     }
 
     getCenter() {
@@ -54,22 +54,28 @@ export class Rectangle {
         B.getTop() - minSeparation >= A.getBottom());
     }
 
-    //TODO: unknown licence - analyze and rewrite
+    overlapsFloor(B, minSeparation = 0) {
+        const A = this;
+        return !(Math.floor(B.getLeft()) - minSeparation >= Math.floor(A.getRight()) ||
+        Math.floor(B.getRight()) <= Math.floor(A.getLeft()) - minSeparation ||
+        Math.floor(B.getBottom()) <= Math.floor(A.getTop()) - minSeparation ||
+        Math.floor(B.getTop()) - minSeparation >= Math.floor(A.getBottom()));
+    }
+
     minSeparationVector(B, minSeparation) {
         var vect = this.separationVector(B, minSeparation);
         if (Math.abs(vect.x) < Math.abs(vect.y)) {
             vect.y = 0;
-        }
-        else {
+        } else {
             vect.x = 0;
         }
         return vect;
     }
 
     separationVector(B, padding) {
-        let A = this;
-        let dx = Math.min(A.getRight() - B.getLeft() + padding, A.getLeft() - B.getRight() - padding);
-        let dy = Math.min(A.getTop() - B.getBottom() - padding, A.getBottom() - B.getTop() - padding);
+        const A = this;
+        const dx = Math.min(Math.floor(A.getRight()) - Math.floor(B.getLeft()) + padding, Math.floor(A.getLeft()) - Math.floor(B.getRight()) - padding);
+        const dy = Math.min(Math.floor(A.getTop()) - Math.floor(B.getBottom()) - padding, Math.floor(A.getBottom()) - Math.floor(B.getTop()) - padding);
         return {x: dx, y: dy};
     }
 

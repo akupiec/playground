@@ -51,7 +51,7 @@ describe('Room', function () {
         var mapData = new MapData(5, 5);
         const floorVal = 4;
         const wallValue = 5;
-        const doorValue = 7;
+        const doorValue = 11;
 
         room.addType(ROOM_TYPES.MAIN);
         room.addDoor(door);

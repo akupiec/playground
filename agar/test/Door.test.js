@@ -7,7 +7,7 @@ describe('Door', function () {
     it('should paint onMap H', function () {
         var door = new Door(2, 0, 2, DOOR_TYPES.HORIZONTAL);
         var mapData = new MapData(3, 3);
-        const doorValue = 7;
+        const doorValue = 11;
 
         assert.deepEqual(mapData.data,
             [0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -22,7 +22,7 @@ describe('Door', function () {
     it('should paint onMap V', function () {
         var door = new Door(2, 0, 2, DOOR_TYPES.VERTICAL);
         var mapData = new MapData(3, 3);
-        const doorValue = 7;
+        const doorValue = 11;
 
         assert.deepEqual(mapData.data,
             [0, 0, 0, 0, 0, 0, 0, 0, 0]

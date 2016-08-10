@@ -11,8 +11,8 @@ describe('Rectangle', function () {
         assert.equal(A.getTop(), -344);
         A = new Rectangle(-12, 344, 10, 10);
         assert.equal(A.getTop(), 344);
-        // A = new Rectangle(-12, 1.572, 10, 10);
-        // assert.equal(A.getTop(), 1.572);
+        A = new Rectangle(-12, 1.572, 10, 10);
+        assert.equal(A.getTop(), 1.572);
     });
     it('should getBottom', function () {
         var A;
@@ -22,7 +22,7 @@ describe('Rectangle', function () {
         assert.equal(A.getBottom(), -334);
         A = new Rectangle(-12, 344, 10, 10);
         assert.equal(A.getBottom(), 354);
-        // A = new Rectangle(-12, 1.572, 10, 10);
-        // assert.equal(A.getBottom(), 11.572);
+        A = new Rectangle(-12, 1.572, 10, 10);
+        assert.equal(A.getBottom(), 11.572);
     });
 });

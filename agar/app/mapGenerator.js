@@ -123,7 +123,7 @@ export class MapGenerator {
                 }
                 for (let j = i + 1; j < rooms.length; j++) {
                     const b = rooms[j].getBounds();
-                    if (a.overlaps(b, separation_force)) {
+                    if (a.overlapsFloor(b, separation_force)) {
                         const delta = a.minSeparationVector(b, separation_force);
                         a.move(-delta.x / 2, -delta.y / 2);
                         b.move(delta.x / 2, delta.y / 2);
