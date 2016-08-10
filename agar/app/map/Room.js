@@ -1,8 +1,5 @@
-const WALL_THICKNESS = 1;
-const SPRITE_DATA = [{
-    floor: 4,
-    wall: 5,
-}];
+const SPRITE_DATA = require('./lvl0_tile.json');
+
 
 class Room {
     constructor(rect) {

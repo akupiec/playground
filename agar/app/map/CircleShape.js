@@ -1,9 +1,9 @@
 import Circle from "../math/Circle";
-
+const SPRITE_DATA = require('./lvl0_tile.json');
 
 export class CircleShape extends Circle {
     paintOnMap(mapData) {
-        var dataVal = 5;
+        var dataVal = SPRITE_DATA[0].wall;
         let x = this.r;
         let y = 0;
         let err = 0;

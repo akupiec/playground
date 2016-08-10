@@ -19,6 +19,11 @@ module.exports = {
                     cacheDirectory: true,
                     plugins: ['transform-es2015-modules-commonjs']
                 }
+            },
+            {
+                test: /\.json$/,
+                excludes: ['node_modules'],
+                loader: 'json-loader',
             }
         ]
     },

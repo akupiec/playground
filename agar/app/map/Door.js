@@ -1,14 +1,12 @@
 import {Line} from "../math/Line";
 import {Point} from "../math/Point";
+const SPRITE_DATA = require('./lvl0_tile.json');
+
 
 const DOOR_TYPES = {
     HORIZONTAL: 0,
     VERTICAL: 1,
 };
-
-const SPRITE_DATA = [{
-    floor: 11,
-}];
 
 class Door {
     constructor(x, y, w, type) {
@@ -27,11 +25,11 @@ class Door {
     paintOnMap(mapData) {
         if (this._line.isHorizontal()) {
             for (let i = this._line.p0.x; i < this._line.p1.x; i++) {
-                mapData.setVal(i, this._line.p0.y, SPRITE_DATA[0].floor)
+                mapData.setVal(i, this._line.p0.y, SPRITE_DATA[0].door)
             }
         } else if (this._line.isVertical()) {
             for (let i = this._line.p0.y; i < this._line.p1.y; i++) {
-                mapData.setVal(this._line.p0.x, i, SPRITE_DATA[0].floor)
+                mapData.setVal(this._line.p0.x, i, SPRITE_DATA[0].door)
             }
         }
     }
