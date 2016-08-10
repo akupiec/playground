@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import Mushroom from '../sprites/Mushroom'
-import {setResponsiveWidth} from '../utils'
+const SPRITE_DATA = require('../../map/lvl0_tile.json');
+
 
 export default class extends Phaser.State {
     init() {
@@ -9,8 +10,10 @@ export default class extends Phaser.State {
     preload() {
         this.map = this.game.add.tilemap('dynamicMap', 32, 32);
         this.map.addTilesetImage('tiles', 'tiles', 32, 32);
-        const layer = this.map.createLayer(0);
-        layer.resizeWorld();
+        this.map.setCollision(SPRITE_DATA[0].wall);
+        this.layer = this.map.createLayer(0);
+        this.layer.resizeWorld();
+        this.layer.debug = true;
     }
 
     create() {
@@ -20,19 +23,17 @@ export default class extends Phaser.State {
         banner.fill = '#77BFA3';
         banner.anchor.setTo(0.5);
 
-        this.game.physics.startSystem(Phaser.Physics.P2JS);
 
         this.mushroom = new Mushroom({
             game: this.game,
             x: this.game.world.centerX,
             y: this.game.world.centerY,
-            asset: 'mushroom'
+            asset: 'mushroom',
+            collideLayer: this.layer,
         });
         // set the sprite width to 30% of the game width
         // setResponsiveWidth(this.mushroom, 30, this.game.world);
         this.game.add.existing(this.mushroom);
-
-
         this.game.camera.follow(this.mushroom);
     }
 

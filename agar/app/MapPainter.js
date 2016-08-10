@@ -15,10 +15,10 @@ export class Game {
         this._generator.generate();
 
         this.drawWorldBound();
-        this.drawRooms();
+        // this.drawRooms();
         this.drawDoors();
         this.render();
-        this.drawNums();
+        // this.drawNums();
     }
 
     drawWorldBound() {

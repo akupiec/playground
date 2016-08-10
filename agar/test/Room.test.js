@@ -67,5 +67,5 @@ describe('Room', function () {
             0, wallValue, wallValue, wallValue, wallValue,
             0, 0, 0, 0, 0]
         );
-    })
+    });
 });

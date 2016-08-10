@@ -2,7 +2,6 @@ require('seedrandom');
 import _ from 'underscore';
 import {CircleShape} from "./map/CircleShape";
 import {MapData} from "./map/MapData";
-import Circle from "./math/Circle";
 import {Room, ROOM_TYPES} from "./map/Room";
 import {Door, DOOR_TYPES} from "./map/Door";
 import * as TSP from "../lib/tsp/algorithm";
@@ -11,7 +10,7 @@ import * as MyMath from "./math/common";
 import * as marsagliaPolar from "../lib/marsaglia-polar";
 
 
-// Math.seedrandom('hedddd6');
+Math.seedrandom('hedddd6');
 const rooms_num = 500; // (0, }
 const gen_radius = 0.5; // (0;1)
 const gen_range_w = 1000; // (0, }
@@ -175,15 +174,16 @@ export class MapGenerator {
     }
 
     _genDoors() {
-        const rooms = this._getMainRooms();
+        // const rooms = this._getMainRooms();
+        const rooms = this._allRooms;
         rooms.map((room) => {
             // var numOfDoors = Math.round(MyMath.normalizeRandomRange(Math.random, 1, 4));
             var rect = room.getBounds();
 
-            room.addDoor(new Door(rect.x + rect.width / 2, rect.y, door_size, DOOR_TYPES.HORIZONTAL));
-            room.addDoor(new Door(rect.x + rect.width / 2, rect.getBottom(), door_size, DOOR_TYPES.HORIZONTAL));
-            room.addDoor(new Door(rect.x, rect.y + rect.height / 2, door_size, DOOR_TYPES.VERTICAL));
-            room.addDoor(new Door(rect.getRight(), rect.y + rect.height / 2, door_size, DOOR_TYPES.VERTICAL));
+            room.addDoor(new Door(Math.round(rect.x + rect.width / 2 - door_size / 2), rect.y, door_size, DOOR_TYPES.HORIZONTAL));
+            room.addDoor(new Door(Math.round(rect.x + rect.width / 2 - door_size / 2), rect.getBottom() - 1, door_size, DOOR_TYPES.HORIZONTAL));
+            room.addDoor(new Door(rect.x, Math.round(rect.y + rect.height / 2 - door_size / 2), door_size, DOOR_TYPES.VERTICAL));
+            room.addDoor(new Door(rect.getRight() - 1, Math.round(rect.y + rect.height / 2 - door_size / 2), door_size, DOOR_TYPES.VERTICAL));
         })
     }
 }
