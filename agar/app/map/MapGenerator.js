@@ -1,13 +1,13 @@
 require('seedrandom');
 import _ from 'underscore';
-import {CircleShape} from "./map/CircleShape";
-import {MapData} from "./map/MapData";
-import {Room, ROOM_TYPES} from "./map/Room";
-import {Door, DOOR_TYPES} from "./map/Door";
-import * as TSP from "../lib/tsp/algorithm";
-import {Rectangle} from "./math/Rectangle";
-import * as MyMath from "./math/common";
-import * as marsagliaPolar from "../lib/marsaglia-polar";
+import {CircleShape} from "./CircleShape";
+import {MapData} from "./MapData";
+import {Room, ROOM_TYPES} from "./Room";
+import {Door, DOOR_TYPES} from "./Door";
+import * as TSP from "../../lib/tsp/algorithm";
+import {Rectangle} from "../math/Rectangle";
+import * as MyMath from "../math/common";
+import * as marsagliaPolar from "../../lib/marsaglia-polar";
 
 
 const initConfig = {

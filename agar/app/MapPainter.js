@@ -1,4 +1,4 @@
-import {MapGenerator} from "./MapGenerator";
+import {MapGenerator} from "./map/MapGenerator";
 import PIXI from 'pixi.js';
 
 export class Game {

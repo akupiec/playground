@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import {centerGameObjects} from '../utils'
-import {MapGenerator} from "../../MapGenerator";
+import {MapGenerator} from "../../map/MapGenerator";
 
 
 export default class extends Phaser.State {

@@ -1,0 +1,21 @@
+{
+  "seed": "hedddd4",
+  "rooms_num": 500,
+  // (0, }
+  "gen_range_w": 1000,
+  // (0, }
+  "gen_range_h": 1000,
+  // (0, }
+  "max_room_size": 40,
+  // (0, }
+  "min_room_size": 10,
+  // (0, }
+  "separation_force": 8,
+  // (0, }
+  "gen_world_bound": 450,
+  "door_size": 5,
+  "gen_radius": 0.5,
+  // (0;1)
+  "main_room_size": 1.2,
+  "secret_chance": 0.3
+}
