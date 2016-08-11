@@ -10,21 +10,26 @@ import * as MyMath from "./math/common";
 import * as marsagliaPolar from "../lib/marsaglia-polar";
 
 
-Math.seedrandom('hedddd6');
-const rooms_num = 500; // (0, }
-const gen_radius = 0.5; // (0;1)
-const gen_range_w = 1000; // (0, }
-const gen_range_h = 1000; // (0, }
-const max_room_size = 40; // (0, }
-const min_room_size = 10; // (0, }
-const separation_force = 8; // (0, }
-const main_room_size = 1.2;
-const gen_world_bound = 450;
-const secret_chance = 0.3;
-const door_size = 5;
+const initConfig = {
+    seed: 'hedddd4',
+    rooms_num: 500, // (0, }
+    gen_range_w: 1000, // (0, }
+    gen_range_h: 1000, // (0, }
+    max_room_size: 40, // (0, }
+    min_room_size: 10, // (0, }
+    separation_force: 8, // (0, }
+    gen_world_bound: 450,
+    door_size: 5,
+    gen_radius: 0.5, // (0;1)
+    main_room_size: 1.2,
+    secret_chance: 0.3,
+};
 
 export class MapGenerator {
-    generate() {
+    generate(config = initConfig) {
+        Math.seedrandom(config.seed);
+        this.config = config;
+
         console.time('generation');
         this._worldBound = this._genWorldBounds();
         var rectangles = this._genRects();
@@ -34,7 +39,6 @@ export class MapGenerator {
         this._orderRooms();
         this._getExtraRoomsInfo();
         this._genDoors();
-
         console.timeEnd('generation');
     }
 
@@ -43,7 +47,7 @@ export class MapGenerator {
     }
 
     getMapData() {
-        const rawData = new MapData(gen_range_w, gen_range_h);
+        const rawData = new MapData(this.config.gen_range_w, this.config.gen_range_h);
         this._allRooms.map((room) => {
             room.paintOnMap(rawData);
         });
@@ -52,7 +56,7 @@ export class MapGenerator {
     }
 
     _genWorldBounds() {
-        return new CircleShape(gen_range_w / 2, gen_range_h / 2, gen_world_bound);
+        return new CircleShape(this.config.gen_range_w / 2, this.config.gen_range_h / 2, this.config.gen_world_bound);
     }
 
     _orderRooms() {
@@ -82,24 +86,24 @@ export class MapGenerator {
     }
 
     _genRects() {
-        function _genRectPosition() {
-            let rectPosition = MyMath.randomPointInCircle(gen_radius);
-            rectPosition.x = MyMath.normalizeRandomRange(++rectPosition.x, 0, gen_range_w / 2);
-            rectPosition.y = MyMath.normalizeRandomRange(++rectPosition.y, 0, gen_range_h / 2);
+        const _genRectPosition = () => {
+            let rectPosition = MyMath.randomPointInCircle(this.config.gen_radius);
+            rectPosition.x = MyMath.normalizeRandomRange(++rectPosition.x, 0, this.config.gen_range_w / 2);
+            rectPosition.y = MyMath.normalizeRandomRange(++rectPosition.y, 0, this.config.gen_range_h / 2);
             return rectPosition;
-        }
+        };
 
-        function _genRectSize() {
+        const _genRectSize = () => {
             const sizeW = Math.abs(marsagliaPolar.simpleRandom());
             const sizeH = Math.abs(marsagliaPolar.simpleRandom());
             return {
-                w: MyMath.normalizeRandomRange(sizeW, min_room_size, max_room_size),
-                h: MyMath.normalizeRandomRange(sizeH, min_room_size, max_room_size)
+                w: MyMath.normalizeRandomRange(sizeW, this.config.min_room_size, this.config.max_room_size),
+                h: MyMath.normalizeRandomRange(sizeH, this.config.min_room_size, this.config.max_room_size)
             };
-        }
+        };
 
         var rectangles = [];
-        for (let i = 0; i < rooms_num; i++) {
+        for (let i = 0; i < this.config.rooms_num; i++) {
             const roomPosition = _genRectPosition();
             const size = _genRectSize();
             rectangles.push(new Rectangle(roomPosition.x, roomPosition.y, size.w, size.h));
@@ -122,8 +126,8 @@ export class MapGenerator {
                 }
                 for (let j = i + 1; j < rooms.length; j++) {
                     const b = rooms[j].getBounds();
-                    if (a.overlapsFloor(b, separation_force)) {
-                        const delta = a.minSeparationVector(b, separation_force);
+                    if (a.overlapsFloor(b, this.config.separation_force)) {
+                        const delta = a.minSeparationVector(b, this.config.separation_force);
                         a.move(-delta.x / 2, -delta.y / 2);
                         b.move(delta.x / 2, delta.y / 2);
                         runAgain = true;
@@ -140,11 +144,11 @@ export class MapGenerator {
             sumW += rect.width;
             sumH += rect.height;
         });
-        const meanW = sumW / rooms_num;
-        const meanH = sumH / rooms_num;
+        const meanW = sumW / this.config.rooms_num;
+        const meanH = sumH / this.config.rooms_num;
         return rectangles.map((rect) => {
             const room = new Room(rect);
-            if (rect.width > main_room_size * meanW && rect.height > main_room_size * meanH) {
+            if (rect.width > this.config.main_room_size * meanW && rect.height > this.config.main_room_size * meanH) {
                 room.addType(ROOM_TYPES.MAIN);
             }
             return room;
@@ -166,7 +170,7 @@ export class MapGenerator {
             if (room.getOrder() === endIdx) {
                 room.addType(ROOM_TYPES.END);
             }
-            if (room.getOrder() > endIdx && Math.random() <= secret_chance) {
+            if (room.getOrder() > endIdx && Math.random() <= this.config.secret_chance) {
                 room.addType(ROOM_TYPES.SECRET);
             }
 
@@ -180,10 +184,10 @@ export class MapGenerator {
             // var numOfDoors = Math.round(MyMath.normalizeRandomRange(Math.random, 1, 4));
             var rect = room.getBounds();
 
-            room.addDoor(new Door(Math.round(rect.x + rect.width / 2 - door_size / 2), rect.y, door_size, DOOR_TYPES.HORIZONTAL));
-            room.addDoor(new Door(Math.round(rect.x + rect.width / 2 - door_size / 2), rect.getBottom() - 1, door_size, DOOR_TYPES.HORIZONTAL));
-            room.addDoor(new Door(rect.x, Math.round(rect.y + rect.height / 2 - door_size / 2), door_size, DOOR_TYPES.VERTICAL));
-            room.addDoor(new Door(rect.getRight() - 1, Math.round(rect.y + rect.height / 2 - door_size / 2), door_size, DOOR_TYPES.VERTICAL));
+            room.addDoor(new Door(Math.round(rect.x + rect.width / 2 - this.config.door_size / 2), rect.y, this.config.door_size, DOOR_TYPES.HORIZONTAL));
+            room.addDoor(new Door(Math.round(rect.x + rect.width / 2 - this.config.door_size / 2), rect.getBottom() - 1, this.config.door_size, DOOR_TYPES.HORIZONTAL));
+            room.addDoor(new Door(rect.x, Math.round(rect.y + rect.height / 2 - this.config.door_size / 2), this.config.door_size, DOOR_TYPES.VERTICAL));
+            room.addDoor(new Door(rect.getRight() - 1, Math.round(rect.y + rect.height / 2 - this.config.door_size / 2), this.config.door_size, DOOR_TYPES.VERTICAL));
         })
     }
 }
