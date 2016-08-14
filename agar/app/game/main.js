@@ -5,7 +5,7 @@ import Phaser from 'phaser'
 import BootState from './states/Boot'
 import GameState2 from './states/Game'
 import MapGeneratorState from './states/MapGenerator'
-import TestState from './states/ConsoleState'
+import TestState from './states/Test'
 
 class Game extends Phaser.Game {
 

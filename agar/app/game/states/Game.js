@@ -38,6 +38,7 @@ export default class extends Phaser.State {
 
     render() {
         this._decoree.render();
+        this.player.render();
         // this.game.debug.cameraInfo(game.camera, 32, 32);
         // this.game.debug.spriteCoords(this.player, 32, 500);
         // this.game.debug.spriteInfo(this.player, 32, 32)
