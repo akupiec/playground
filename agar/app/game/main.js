@@ -3,9 +3,9 @@
 import Phaser from 'phaser'
 
 import BootState from './states/Boot'
-import SplashState from './states/Splash'
 import GameState2 from './states/Game2'
 import MapGeneratorState from './states/MapGenerator'
+import TestState from './states/ConsoleState'
 
 class Game extends Phaser.Game {
 
@@ -16,9 +16,9 @@ class Game extends Phaser.Game {
         super(width, height, Phaser.AUTO, 'content', null);
 
         this.state.add('Boot', BootState, false);
-        this.state.add('Splash', SplashState, false);
         this.state.add('Game', GameState2, false);
         this.state.add('Generator', MapGeneratorState, false);
+        this.state.add('Test', TestState, false);
 
         this.state.start('Boot', true, false, ['Generator']);
     }

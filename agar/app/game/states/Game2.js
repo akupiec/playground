@@ -1,13 +1,18 @@
 import Phaser from 'phaser'
 import Mushroom from '../sprites/Mushroom'
+import ConsoleState from './ConsoleState';
+
 const SPRITE_DATA = require('../../map/lvl0_tile.json');
 
 
 export default class extends Phaser.State {
     init() {
+        this._decoree = new ConsoleState(this.game);
+        // this._decoree.executeCmd = this.executeCmd;
     }
 
     preload() {
+        this._decoree.preload();
         this.map = this.game.add.tilemap('dynamicMap', 32, 32);
         this.map.addTilesetImage('tiles', 'tiles', 32, 32);
         this.map.setCollision(SPRITE_DATA[0].wall);
@@ -17,6 +22,7 @@ export default class extends Phaser.State {
     }
 
     create() {
+        this._decoree.create();
         let banner = this.add.text(this.game.world.centerX, this.game.height - 30, 'Phaser + ES6 + Webpack');
         banner.font = 'Nunito';
         banner.fontSize = 40;
@@ -30,15 +36,15 @@ export default class extends Phaser.State {
             asset: 'mushroom',
             collideLayer: this.layer,
         });
-        // set the sprite width to 30% of the game width
-        // setResponsiveWidth(this.mushroom, 30, this.game.world);
+
         this.game.add.existing(this.mushroom);
         this.game.camera.follow(this.mushroom);
     }
 
     render() {
+        this._decoree.render();
         this.game.debug.cameraInfo(game.camera, 32, 32);
         this.game.debug.spriteCoords(this.mushroom, 32, 500);
-        // this.game.debug.spriteInfo(this.mushroom, 32, 32)
+        this.game.debug.spriteInfo(this.mushroom, 32, 32)
     }
 }

@@ -13,11 +13,8 @@ export default class extends Phaser.State {
     }
 
     create() {
-        this.game.time.events.add(1, this.generateMap, this);
     }
 
     render() {
-        if (this.ready) {
-        }
     }
 }
