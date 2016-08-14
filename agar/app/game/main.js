@@ -3,7 +3,7 @@
 import Phaser from 'phaser'
 
 import BootState from './states/Boot'
-import GameState2 from './states/Game2'
+import GameState2 from './states/Game'
 import MapGeneratorState from './states/MapGenerator'
 import TestState from './states/ConsoleState'
 

@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import Mushroom from '../sprites/Mushroom'
+import Player from '../sprites/Player'
 import ConsoleState from './ConsoleState';
 
 const SPRITE_DATA = require('../../map/lvl0_tile.json');
@@ -23,13 +23,8 @@ export default class extends Phaser.State {
 
     create() {
         this._decoree.create();
-        let banner = this.add.text(this.game.world.centerX, this.game.height - 30, 'Phaser + ES6 + Webpack');
-        banner.font = 'Nunito';
-        banner.fontSize = 40;
-        banner.fill = '#77BFA3';
-        banner.anchor.setTo(0.5);
 
-        this.mushroom = new Mushroom({
+        this.player = new Player({
             game: this.game,
             x: this.game.world.centerX,
             y: this.game.world.centerY,
@@ -37,14 +32,14 @@ export default class extends Phaser.State {
             collideLayer: this.layer,
         });
 
-        this.game.add.existing(this.mushroom);
-        this.game.camera.follow(this.mushroom);
+        this.game.add.existing(this.player);
+        this.game.camera.follow(this.player);
     }
 
     render() {
         this._decoree.render();
-        this.game.debug.cameraInfo(game.camera, 32, 32);
-        this.game.debug.spriteCoords(this.mushroom, 32, 500);
-        this.game.debug.spriteInfo(this.mushroom, 32, 32)
+        // this.game.debug.cameraInfo(game.camera, 32, 32);
+        // this.game.debug.spriteCoords(this.player, 32, 500);
+        // this.game.debug.spriteInfo(this.player, 32, 32)
     }
 }
