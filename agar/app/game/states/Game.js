@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import Player from '../sprites/Player'
 import ConsoleState from './ConsoleState';
+import Rat from "../sprites/Rat";
 
 const SPRITE_DATA = require('../../map/lvl0_tile.json');
 
@@ -32,8 +33,22 @@ export default class extends Phaser.State {
             collideLayer: this.layer,
         });
 
+        this.rat = new Rat({
+            game: this.game,
+            x: this.game.world.centerX,
+            y: this.game.world.centerY - 100,
+            asset: 'rat',
+            collideLayer: this.layer,
+        });
+        this.game.add.existing(this.rat);
+
+
         this.game.add.existing(this.player);
         this.game.camera.follow(this.player);
+    }
+
+    update() {
+        this.rat.setPlayerPosition(this.player.position);
     }
 
     render() {
