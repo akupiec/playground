@@ -65,9 +65,8 @@ function onBodyLoad() {
         lastRefreshLabel.innerText = ((new Date().getTime() - lastRefreshTime) / 1000).toFixed(1) + ' s';
     }, 100);
 
-    initChart();
     window.addEventListener('resize', Chart.render);
-    Chart.addData(-99);
+    Chart.render();
 }
 
 function onStartRun() {
