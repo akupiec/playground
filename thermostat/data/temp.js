@@ -1,19 +1,27 @@
+const ROOT_PREFIX = 'http://192.168.1.107';
+
 let reloadPeriod;
 let running;
+let lastRefreshTime = new Date();
 
 function loadTemperature() {
     const currentTemp = document.getElementById("current-temp");
-    const currentHyst = document.getElementById("current-hyst");
+    const setHyst = document.getElementById("set-hyst");
+    const setTemp = document.getElementById("set-temp");
 
     return setInterval(function () {
         ajax({
             type: 'GET',
-            url: '/all',
+            url: ROOT_PREFIX + '/all',
             sCb: function (response) {
                 const jsonResponse = JSON.parse(response.responseText);
-                appendTemp(jsonResponse.temp);
-                currentHyst.value = jsonResponse.hyst;
+                // appendTemp(jsonResponse.temp);
+                Chart.addData(jsonResponse.temp);
                 currentTemp.value = jsonResponse.temp;
+                setHyst.value = jsonResponse.setHyst;
+                setTemp.value = jsonResponse.setTemp;
+
+                lastRefreshTime = new Date().getTime();
             },
             eCb: function () {
                 currentHyst.value = -99999;
@@ -27,11 +35,11 @@ function setButtonState() {
     const startBtn = document.getElementById("start-button");
     const stopBtn = document.getElementById("stop-button");
     if (running) {
-        startBtn.setAttribute("disabled", "disabled");
-        stopBtn.removeAttribute("disabled");
+        startBtn.classList.add("hidden");
+        stopBtn.classList.remove("hidden");
     } else {
-        stopBtn.setAttribute("disabled", "disabled");
-        startBtn.removeAttribute("disabled");
+        stopBtn.classList.add("hidden");
+        startBtn.classList.remove("hidden");
     }
 }
 
@@ -49,66 +57,17 @@ function stop() {
     setButtonState();
 }
 
-let data = [];
-function appendTemp(temp) {
-    data.push({
-        date: data.length,
-        close: temp,
-    });
-    repaintPlot();
-}
-
-let x, y;
-function repaintPlot() {
-
-    const line = d3.line()
-        .x(function (d) {
-            return x(d.date);
-        })
-        .y(function (d) {
-            return y(d.close);
-        });
-
-    // x.domain(d3.extent(data, function(d) { return d.date; }));
-    // y.domain(d3.extent(data, function(d) { return d.close; }));
-    const dataStart = data.length - 50 > 0 ? data.length - 50 : 0;
-    x.domain([dataStart, data.length]);
-
-    const svg = d3.select("svg").selectAll('path').data(data);
-    svg.attr('d', line(data))
-        .attr("stroke", "steelblue")
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .attr("stroke-width", 1.5);
-    svg.exit().remove();
-}
-
 function onBodyLoad() {
     setButtonState();
-    const svg = d3.select("svg");
-    const margin = {top: 20, right: 20, bottom: 30, left: 50};
-    let width = +svg.attr("width") - margin.left - margin.right;
-    let height = +svg.attr("height") - margin.top - margin.bottom;
-    let g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    x = d3.scaleLinear()
-        .rangeRound([0, width]);
+    const lastRefreshLabel = document.getElementById("last-refresh-time");
+    setInterval(() => {
+        lastRefreshLabel.innerText = ((new Date().getTime() - lastRefreshTime) / 1000).toFixed(1) + ' s';
+    }, 100);
 
-    y = d3.scaleLinear()
-        .rangeRound([height, 0])
-        .domain([0, 100]);
-
-    g.append("g")
-        .call(d3.axisLeft(y))
-        .append("text")
-        .attr("fill", "#000")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", "0.71em")
-        .attr("text-anchor", "end")
-        .text("Temp (C)");
-    svg.data(data)
-        .append('svg:path');
+    initChart();
+    window.addEventListener('resize', Chart.render);
+    Chart.addData(-99);
 }
 
 function onStartRun() {
@@ -129,7 +88,7 @@ function saveTemperature() {
     fd.append('hyst', hystInput.value);
     ajax({
         type: 'POST',
-        url: '/saveTemp',
+        url: ROOT_PREFIX + '/saveTemp',
         data: fd
     });
 }

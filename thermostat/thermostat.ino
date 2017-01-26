@@ -21,8 +21,8 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 DeviceAddress insideThermometer;
 
-float setTemp;
-float setHyst;
+float setTemp = 0;
+float setHyst = 0;
 
 void setup(void) {
   DBG_OUTPUT_PORT.begin(115200);

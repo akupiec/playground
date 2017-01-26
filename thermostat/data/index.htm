@@ -4,7 +4,34 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>ESP Monitor</title>
     <link rel="stylesheet" href="bootstrap.min.css">
+    <style>
+        .graph .axis {
+            stroke-width: 1;
+        }
 
+        .graph .axis .tick line {
+            stroke: black;
+        }
+
+        .graph .axis .tick text {
+            fill: black;
+            font-size: 1em;
+        }
+
+        .graph .axis .domain {
+            fill: none;
+            stroke: black;
+        }
+        .graph svg {
+            padding: 10px 0 10px 35px;
+        }
+
+        .graph .group {
+            fill: none;
+            stroke: black;
+            stroke-width: 1.5;
+        }
+    </style>
 </head>
 <body id="controls" style="margin: 20px;" onload="onBodyLoad()">
 <div class="well well-sm">
@@ -12,13 +39,14 @@
         <div class="form-group">
             <label class="col-sm-2 control-label" for="refresh-rate">Refresh Period (ms):</label>
             <div class="col-sm-10">
-                <input class="form-control" type="number" id="refresh-rate" placeholder="Period" value="3000">
+                <input class="form-control" type="number" id="refresh-rate" placeholder="Period" value="1000">
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button class="btn btn-info" type="button" id="start-button" onclick="onStartRun();">Start</button>
+                <button class="btn btn-primary" type="button" id="start-button" onclick="onStartRun();">Start</button>
                 <button class="btn btn-default" type="button" id="stop-button" onclick="onStopRun();">Stop</button>
+                <span class="control-label" id="last-refresh-time">Refresh time</span>
             </div>
         </div>
     </form>
@@ -50,19 +78,23 @@
     <form class="form-inline">
         <div class="form-group">
             <label class=" control-label" for="current-temp">Current Temperature (C):</label>
-            <input class="form-control" type="number" id="current-temp" placeholder="Period" value="-9999" readonly>
+            <input class="form-control" type="number" id="current-temp" placeholder="Period" value="99999" readonly>
         </div>
         <div class="form-group">
-            <label class=" control-label" for="current-hyst">Current Hysteresis (C):</label>
-            <input class="form-control" type="number" id="current-hyst" placeholder="Period" value="99999" readonly>
+            <label class=" control-label" for="set-hyst">Set Hysteresis (C):</label>
+            <input class="form-control" type="number" id="set-hyst" placeholder="Period" value="99999" readonly>
+        </div>
+        <div class="form-group">
+            <label class=" control-label" for="set-temp">Set Temp (C):</label>
+            <input class="form-control" type="number" id="set-temp" placeholder="Period" value="99999" readonly>
         </div>
     </form>
-
-    <svg width="960" height="500"></svg>
+    <div class="graph"></div>
 </div>
-
-<script type="text/javascript" src="d3.min.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<!--<script type="text/javascript" src="d3.min.js"></script>-->
 <script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="chart.js"></script>
 <script type="text/javascript" src="temp.js"></script>
 </body>
 </html>
