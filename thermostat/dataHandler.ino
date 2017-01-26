@@ -54,7 +54,6 @@ void saveAccessData(String uuid, String pass) {
   DBG_OUTPUT_PORT.println("Saving ACCESS_DATA_FILE");
   fsUploadFile = SPIFFS.open(ACCESS_DATA_FILE, "w");
 
-  //DBG_OUTPUT_PORT.print("handleFileUpload Data: "); DBG_OUTPUT_PORT.println(upload.currentSize);
   if (fsUploadFile) {
     DBG_OUTPUT_PORT.println("Data: " + uuid + " | " + pass + " \n");
     fsUploadFile.println(uuid);
@@ -83,7 +82,7 @@ void saveTempConfig(float temp, float hyst) {
 
   //DBG_OUTPUT_PORT.print("handleFileUpload Data: "); DBG_OUTPUT_PORT.println(upload.currentSize);
   if (fsUploadFile) {
-    DBG_OUTPUT_PORT.printf("temp: %f | %f \n", temp, hyst);
+     DBG_OUTPUT_PORT.println("temp: "+String(setTemp)+" | "+String(setHyst));
     fsUploadFile.println(temp);
     fsUploadFile.println(hyst);
     fsUploadFile.close();
@@ -101,7 +100,7 @@ void readTempConfig(float *temp, float *hyst) {
     *hyst = file.readStringUntil('\n').toFloat();
     file.close();
   }
-  DBG_OUTPUT_PORT.println("Reading ACCESS_DATA_FILE Compleate");
+  DBG_OUTPUT_PORT.println("Reading TEMP_DATA_FILE Compleate");
 }
 
 void handleFileUpload() {

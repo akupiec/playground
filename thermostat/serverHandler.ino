@@ -1,11 +1,14 @@
 void handleRoot() {
-  if (!handleFileRead("/login.htm")) server.send(404, "text/plain", "FileNotFound");
+//  if (!handleFileRead("/login.htm")) server.send(404, "text/plain", "FileNotFound");
+  server.send(200, "text/plain", "currentIP" + getMyIP());
 }
 
 void wifiEndpoints() {
   server.on("/saveWifi", HTTP_GET, []() {
     DBG_OUTPUT_PORT.println("ServerArgs: " + server.args());
-    saveAccessData(server.arg("login"), server.arg("password"));
+    server.arg("login").toCharArray(ssid, STR_LENGTH);
+    server.arg("password").toCharArray(pass, STR_LENGTH);
+    saveAccessData(ssid, pass);
     server.send(200, "text/plain", "Config changed ESP - Restart required! Open http://" + String(host) + ".local/edit to see the file browser");
   });
 
@@ -28,9 +31,10 @@ void serverFileEndpoints() {
 void apiEndpoints() {  
   server.on("/all", HTTP_GET, []() {
     String json = "{";
-    json += "\"heap\":" + String(ESP.getFreeHeap());
-    json += ", \"analog\":" + String(analogRead(A0));
-    json += ", \"gpio\":" + String((uint32_t)(((GPI | GPO) & 0xFFFF) | ((GP16I & 0x01) << 16)));
+      json += "\"temp\":" + String(getCurrentTemerature());
+//    json += "\"heap\":" + String(ESP.getFreeHeap());
+//    json += ", \"analog\":" + String(analogRead(A0));
+//    json += ", \"gpio\":" + String((uint32_t)(((GPI | GPO) & 0xFFFF) | ((GP16I & 0x01) << 16)));
     json += "}";
     server.send(200, "text/json", json);
     json = String();
@@ -38,7 +42,8 @@ void apiEndpoints() {
 
   server.on("/saveTemp", HTTP_POST, [](){
      saveTempConfig(server.arg("temp").toFloat(), server.arg("hyst").toFloat());
-     server.send(200, "text/plain", "Config changed");
+     refreshTempsConfig();
+     server.send(200, "text/plain", "Config changed to: " + server.arg("temp") + "|" + server.arg("hyst"));
   });
 }
 

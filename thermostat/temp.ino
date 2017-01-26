@@ -73,9 +73,9 @@ void tempInit(void) {
 }
 
 void tempLoop(void) {
-  DBG_OUTPUT_PORT.print("Requesting temperatures...");
+//  DBG_OUTPUT_PORT.print("Requesting temperatures...");
   sensors.requestTemperatures(); // Send the command to get temperatures
-  DBG_OUTPUT_PORT.println("DONE");
+//  DBG_OUTPUT_PORT.println("DONE");
   
   // It responds almost immediately. Let's print out the data
  //printTemperature(insideThermometer); // Use a simple function to print out the data
