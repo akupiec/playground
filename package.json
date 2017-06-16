@@ -1,0 +1,17 @@
+{
+  "name": "combat-tower",
+  "version": "1.0.0",
+  "description": "simple game cobainig ideology of street fighter and ice tower",
+  "main": "index.js",
+  "repository": "''",
+  "author": "akupiec",
+  "license": "GNU AGPLv3",
+  "scripts": {
+    "dev": "webpack -w",
+    "prod": "webpack -p"
+  },
+  "devDependencies": {
+    "pixi.js": "^4.5.1",
+    "webpack": "^2.5.1"
+  }
+}
