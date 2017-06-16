@@ -12,11 +12,10 @@ void refreshTempsConfig() {
 
 void controlLoogicLoop() {
   float currentTemp = getCurrentTemerature();
-  if (setTemp + setHyst >= currentTemp) {
-    digitalWrite(SWITCHER_BUS, HIGH);
-  }
-  if (setTemp - setHyst <= currentTemp) {
+  if (currentTemp >= setTemp + setHyst) {
     digitalWrite(SWITCHER_BUS, LOW);
+  } else if (currentTemp <= setTemp - setHyst) {
+    digitalWrite(SWITCHER_BUS, HIGH);
   }
 }
 

@@ -3,7 +3,9 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 
-#define SWITCHER_BUS 12
+#define SWITCHER_BUS 15
+#define ONE_WIRE_BUS 14
+
 #define STR_LENGTH 32
 const char* host = "thermo";
 char ssid[STR_LENGTH] = "kupiecLan";
@@ -14,7 +16,7 @@ ESP8266WebServer server(80);
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#define ONE_WIRE_BUS 2
+
 
 
 OneWire oneWire(ONE_WIRE_BUS);
